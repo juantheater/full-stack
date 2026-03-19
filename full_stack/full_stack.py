@@ -4,15 +4,14 @@ import reflex as rx
 import reflex_local_auth
 from rxconfig import config
 from .ui.base import base_page
-from .pages.about import about_page
-from .pages.pricing import pricing_page
-from .navigation import routes
-from .auth.pages import registro_espanol
+from .auth.pages import (
+    my_login_page,
+    my_register_page,
+    my_logout_page)
 
-
-
-class State(rx.State):
-    """The app state."""
+from .auth.state import SessionState
+from . import contact,navigation,pages,pages
+from .pages.protected import protected_page
 
 
 def index() -> rx.Component:
@@ -44,15 +43,50 @@ def index() -> rx.Component:
 
 
 app = rx.App()
-app.add_page(index)
+app.add_page(index,title="Pagina del curso Reflex")
+
 # reflex_local_auth pages
 app.add_page(
-    reflex_local_auth.pages.login_page,
+    my_login_page,
     route=reflex_local_auth.routes.LOGIN_ROUTE,
     title="Login",
 )
-app.add_page(registro_espanol, route="/registrarse"),
+app.add_page(
+    my_register_page,
+    route=reflex_local_auth.routes.REGISTER_ROUTE,
+    title="Register",
+)
+
+app.add_page(
+    my_logout_page,
+    route=navigation.routes.LOGOUT_ROUTE,
+    title="Logout",
+)
 
 # my pages
-app.add_page(about_page,route=routes.ABOUT_US_ROUTE)
-app.add_page(pricing_page,route=routes.PRICING_ROUTE)
+app.add_page(
+    pages.pricing_page, 
+    route=navigation.routes.PRICING_ROUTE
+)
+
+app.add_page(
+    pages.about_page,
+    route=navigation.routes.ABOUT_US_ROUTE
+)
+
+app.add_page(
+    contact.contact_page, 
+    route=navigation.routes.CONTACT_US_ROUTE
+)
+
+app.add_page(
+    contact.contact_entries_list_page, 
+    route=navigation.routes.CONTACT_ENTRIES_ROUTE,
+    on_load=contact.ContactState.list_entries
+)
+
+app.add_page(
+    protected_page, 
+    route="/protected/",
+    on_load=SessionState.on_load
+)

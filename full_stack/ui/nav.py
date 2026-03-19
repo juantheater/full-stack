@@ -25,10 +25,18 @@ def navbar() -> rx.Component:
                     align_items="center",
                 ),
                 rx.hstack(
-                    navbar_link("Home", routes.HOME),
-                    navbar_link("About", routes.ABOUT_US_ROUTE),
-                    navbar_link("Pricing", routes.PRICING_ROUTE),
-                    navbar_link("Contact", routes.CONTACT_US_ROUTE),
+                    navbar_link(
+                        "Home", routes.HOME
+                    ),
+                    navbar_link(
+                        "About", routes.ABOUT_US_ROUTE
+                    ),
+                    navbar_link(
+                        "Pricing", routes.PRICING_ROUTE
+                    ),
+                    navbar_link(
+                        "Contact", routes.CONTACT_US_ROUTE
+                    ),
                     spacing="5",
                 ),
                 rx.hstack(
@@ -50,8 +58,8 @@ def navbar() -> rx.Component:
                     spacing="4",
                     justify="end",
                 ),
-                justify="between",
-                align_items="center",
+            justify="between",
+            align_items="center",
             ),
         ),
         rx.mobile_and_tablet(

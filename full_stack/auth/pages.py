@@ -1,82 +1,64 @@
 import reflex as rx
-import reflex_local_auth
 
-def registro_espanol() -> rx.Component:
-    return rx.center(
-        rx.vstack(
-            rx.heading("Crear una cuenta", size="8", margin_bottom="4px"),
-            rx.text(
-                "Únete a nuestra comunidad hoy mismo.",
-                color_scheme="gray",
-                margin_bottom="24px",
+from reflex_local_auth.pages.login import LoginState, login_form
+from reflex_local_auth.pages.registration import RegistrationState, register_form
+
+from .. import navigation
+from ..ui.base import base_page
+
+from .forms import my_register_form
+from .state import SessionState
+
+def my_login_page()->rx.Component:
+    return base_page(
+        rx.center(
+            rx.cond(
+                LoginState.is_hydrated,  # type: ignore
+                rx.card(login_form()),
             ),
-            
-            # Formulario de registro
-            rx.form(
-                rx.vstack(
-                    rx.text("Nombre de usuario", weight="bold", size="2"),
-                    rx.input(
-                        placeholder="Ej: juan_perez",
-                        name="username",
-                        size="3",
-                        width="100%",
-                        required=True,
-                    ),
-                    
-                    rx.text("Correo electrónico", weight="bold", size="2", margin_top="12px"),
-                    rx.input(
-                        placeholder="correo@ejemplo.com",
-                        name="email",
-                        type="email",
-                        size="3",
-                        width="100%",
-                        required=True,
-                    ),
-                    
-                    rx.text("Contraseña", weight="bold", size="2", margin_top="12px"),
-                    rx.input(
-                        placeholder="Mínimo 8 caracteres",
-                        name="password",
-                        type="password",
-                        size="3",
-                        width="100%",
-                        required=True,
-                    ),
-                    
-                    rx.button(
-                        "Registrarse",
-                        type="submit",
-                        size="3",
-                        width="100%",
-                        margin_top="24px",
-                        color_scheme="indigo",
-                        cursor="pointer",
-                    ),
-                    align_items="start",
-                    width="100%",
-                ),
-                # Conexión con la lógica de autenticación de Reflex
-                on_submit=reflex_local_auth.RegistrationState.handle_registration,
-                width="100%",
-            ),
-            
-            rx.hstack(
-                rx.text("¿Ya tienes cuenta?"),
-                rx.link("Inicia sesión", href="/login", color_scheme="indigo"),
-                margin_top="16px",
-                size="2",
-            ),
-            
-            padding="40px",
-            border=f"1px solid {rx.color('gray', 4)}",
-            border_radius="12px",
-            background=rx.color("gray", 1),
-            box_shadow="lg",
-            width="400px",
+             min_height="85vh",
         ),
-        padding_top="10vh",
     )
 
-# Para añadirlo a tu aplicación:
-# app = rx.App()
-# app.add_page(registro_espanol, route="/registrar")
+def my_register_page()->rx.Component:
+    return base_page(
+        rx.center(
+            rx.cond(
+                RegistrationState.success,
+                rx.vstack(
+                    rx.text("Registration successful!"),
+                ),
+                rx.card(my_register_form()),
+                
+            ),
+             min_height="85vh",
+        )
+    )
+
+
+def my_logout_page() -> rx.Component:
+    # Welcome Page (Index)
+    my_child = rx.vstack(
+            rx.heading(
+                "Are you sure you want logout?",
+                 size="7"
+            ),
+            rx.link(
+                rx.button(
+                    "No",
+                    color_scheme="gray"
+                ),
+                href=navigation.routes.HOME
+            ),
+            rx.button(
+                "Yes, please logout",
+                on_click=SessionState.perform_logout
+            ),
+            spacing="5",
+            justify="center",
+            align="center",
+            # text_align="center",
+            min_height="85vh",
+            id='my-child'
+        )
+    return base_page(my_child)
