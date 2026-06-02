@@ -22,17 +22,17 @@ def my_register_form() -> rx.Component:
     """Render the registration form."""
     return rx.form(
         rx.vstack(
-            rx.heading("Create an account", size="7"),
+            rx.heading("Crea una cuenta", size="7"),
             register_error(),
-            rx.text("Username"),
+            rx.text("Nombre"),
             input_100w("username"),
             rx.text("Email"),
             input_100w("email", type='email'),
-            rx.text("Password"),
+            rx.text("Contraseña"),
             input_100w("password", type="password"),
-            rx.text("Confirm Password"),
+            rx.text("Confirmar contraseña"),
             input_100w("confirm_password", type="password"),
-            rx.button("Sign up", width="100%"),
+            rx.button("Registrar", width="100%"),
             rx.center(
                 rx.link("Login", on_click=lambda: rx.redirect(reflex_local_auth.routes.LOGIN_ROUTE)),
                 width="100%",

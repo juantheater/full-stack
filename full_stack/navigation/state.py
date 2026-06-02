@@ -11,9 +11,13 @@ class NavState(rx.State):
         return rx.redirect(routes.PRICING_ROUTE)
     def to_contact(self):
         return rx.redirect(routes.CONTACT_US_ROUTE)
+    def to_contact_entries(self):
+        return rx.redirect(routes.CONTACT_ENTRIES_ROUTE)
     def to_register(self):
         return rx.redirect(reflex_local_auth.routes.REGISTER_ROUTE)
     def to_login(self):
         return rx.redirect(reflex_local_auth.routes.LOGIN_ROUTE)
     def to_logout(self):
         return rx.redirect(routes.LOGOUT_ROUTE)
+    def to_contacto(self):
+        return rx.redirect(routes.CONTACTO_ROUTE)

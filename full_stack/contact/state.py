@@ -1,11 +1,10 @@
 from typing import List
 import asyncio
 import reflex as rx 
-
 from sqlmodel import select
-
 from ..auth.state import SessionState
 from full_stack.models import ContactEntryModel
+
 
 class ContactState(SessionState):
     form_data: dict = {}
@@ -14,8 +13,8 @@ class ContactState(SessionState):
 
     @rx.var
     def thank_you(self)->str:
-        first_name = self.form_data.get("first_name") or ""
-        return f"Thank you {first_name}".strip() + "!"
+        first_name = self.form_data.get("Nombre") or ""
+        return f"Gracias {first_name}".strip() + "!"
 
     async def handle_submit(self, form_data: dict):
         """Handle the form submit."""
@@ -38,13 +37,14 @@ class ContactState(SessionState):
             session.commit()
             self.did_submit = True
             yield
-            await asyncio.sleep(2)
-            self.did_submit = False
-            yield
+        await asyncio.sleep(2)
+        self.did_submit = False
+        yield
 
     def list_entries(self):
         with rx.session() as session:
             entries = session.exec(
                 select(ContactEntryModel)
             ).all()
+            print(entries)
             self.entries = entries

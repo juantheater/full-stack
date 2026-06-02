@@ -5,15 +5,29 @@ from full_stack.navigation.state import NavState
 from ..auth.state import SessionState
 
 
-def sidebar_user_info()->rx.Component:
+def sidebar_user_item()->rx.Component:
     user_info_obj=SessionState.authenticated_user_info
+    username_via_obj=rx.cond(SessionState.authenticated_username,
+    SessionState.authenticated_username, "Mi cuenta")
+    x:str=username_via_obj
     return rx.cond(
         user_info_obj,
         rx.hstack(
-            rx.icon_button(rx.icon("user"), size="3", radius="full"),
+            rx.icon_button(
+                rx.avatar(
+                    fallback=x[0],
+                    color_scheme='orange',
+                    size="8"
+                ),
+                size="3",
+                radius="full"
+            ),
             rx.vstack(
                 rx.box(
-                    rx.text("My account", size="3", weight="bold"),
+                    rx.text(
+                        username_via_obj,
+                        size="3",
+                        weight="bold"),
                     rx.text(
                         f"{user_info_obj.email}",
                         size="2",
@@ -31,9 +45,7 @@ def sidebar_user_info()->rx.Component:
             justify="start",
             width="100%",
             ),
-            rx.fragment(
-
-            )
+            rx.fragment('')
     )
 
 
@@ -127,7 +139,8 @@ def sidebar_items() -> rx.Component:
     return rx.vstack(
         sidebar_item("Dashboard", "layout-dashboard", routes.HOME),
         sidebar_item("Pricing", "square-library", routes.PRICING_ROUTE),
-        sidebar_item("Contact", "bar-chart-4", routes.CONTACT_US_ROUTE),
+        sidebar_item("Contacto", "bar-chart-4", routes.CONTACT_US_ROUTE),
+        sidebar_item("Entradas", "bar-chart-4", routes.CONTACT_ENTRIES_ROUTE),
         spacing="1",
         width="100%",
     )
@@ -160,7 +173,7 @@ def sidebar() -> rx.Component:
                         width="100%",
                     ),
                     rx.divider(),
-                    sidebar_user_info(),
+                    sidebar_user_item(),
                     width="100%",
                     spacing="5",
                 ),
@@ -199,7 +212,7 @@ def sidebar() -> rx.Component:
                                     spacing="1",
                                 ),
                                 rx.divider(margin="0"),
-                                sidebar_user_info(),
+                                sidebar_user_item(),
                                 width="100%",
                                 spacing="5",
                             ),

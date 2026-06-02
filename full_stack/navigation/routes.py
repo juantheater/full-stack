@@ -1,7 +1,7 @@
 HOME="/"
 ABOUT_US_ROUTE="/about"
 PRICING_ROUTE="/pricing"
-CONTACT_US_ROUTE="/contact"
 CONTACT_ENTRIES_ROUTE="/contact/entries"
 LOGOUT_ROUTE="/logout"
 PROTECTED_ROUTE="/protected/"
+CONTACT_ROUTE="/contacto"

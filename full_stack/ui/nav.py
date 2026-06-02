@@ -35,7 +35,7 @@ def navbar() -> rx.Component:
                         "Pricing", routes.PRICING_ROUTE
                     ),
                     navbar_link(
-                        "Contact", routes.CONTACT_US_ROUTE
+                        "Contact", routes.CONTACTO_ROUTE
                     ),
                     spacing="5",
                 ),
@@ -75,23 +75,29 @@ def navbar() -> rx.Component:
                     rx.menu.trigger(rx.icon("menu", size=30)),
                     rx.menu.content(
                         rx.menu.item(
-                            "Home",on_click=NavState.to_home
+                            "Home",
+                            on_click=NavState.to_home
                         ),
                         rx.menu.item(
-                            "About",on_click=NavState.to_about_us
+                            "About",
+                            on_click=NavState.to_about_us
                         ),
                         rx.menu.item(
-                            "Pricing",on_click=NavState.to_pricing
+                            "Pricing",
+                            on_click=NavState.to_pricing
                         ),
                         rx.menu.item(
-                            "Contact",on_click=NavState.to_contact
+                            "Contact",
+                            on_click=NavState.to_contacto
                         ),
                         rx.menu.separator(),
                         rx.menu.item(
-                            "Login",on_click=NavState.to_login
+                            "Login",
+                            on_click=NavState.to_login
                         ),
                         rx.menu.item(
-                            "Register",on_click=NavState.to_register
+                            "Register",
+                            on_click=NavState.to_register
                         ),
                     ),
                     justify="end",

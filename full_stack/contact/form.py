@@ -20,33 +20,37 @@ def contact_form() -> rx.Component:
             rx.vstack(
                 rx.hstack(
                     rx.input(
-                        name="first_name",
-                        placeholder="First Name",
+                        name="Nombre",
+                        placeholder="Nombre",
                         required=True,
                         type='text',
                         width='100%',
                     ),
                     rx.input(
-                        name="last_name",
-                        placeholder="Last Name",
+                        name="Apellido",
+                        placeholder="Apellido",
                         type='text',
                         width='100%',
                     ),
                     width='100%'
                 ),
                 rx.input(
-                    name='email',
-                    placeholder='Your email',
+                    name='Email',
+                    placeholder='Tu email',
                     type='email',
                     width='100%',
                 ),
                 rx.text_area(
                     name='message',
-                    placeholder="Your message",
+                    placeholder="Mensaje",
                     required=True,
                     width='100%',
                 ),
-                rx.button("Submit", type="submit"),
+                rx.button(
+                    "Enviar",
+                    type="submit"
+                    ),
+                    align="center"
             ),
             on_submit=ContactState.handle_submit,
             reset_on_submit=True,

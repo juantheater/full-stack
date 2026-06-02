@@ -26,7 +26,7 @@ def my_register_page()->rx.Component:
             rx.cond(
                 RegistrationState.success,
                 rx.vstack(
-                    rx.text("Registration successful!"),
+                    rx.text("Registro exitoso!"),
                 ),
                 rx.card(my_register_form()),
                 

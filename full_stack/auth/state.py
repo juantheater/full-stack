@@ -3,7 +3,7 @@ import reflex_local_auth
 
 import sqlmodel
 
-from full_stack.models import UserInfo
+#from full_stack.models import UserInfo
 
 
 
@@ -38,10 +38,10 @@ class SessionState(reflex_local_auth.LocalAuthState):
             ).one_or_none()
             if result is None:
                 return None
-            # database lookup
-            # result.user
-            # user_obj = result.user
-            # print(result.user)
+            #database lookup
+            #result.user
+            #user_obj = result.user
+            #print(result.user)
             return result
     
     def on_load(self):
@@ -65,8 +65,8 @@ class MyRegisterState(reflex_local_auth.RegistrationState):
         Set error_message appropriately based on validation results.
 
         Args:
-            form_data: A dict of form fields and values.
-        """
+            form_data: A dict of form fields and values."""
+        
         username = form_data["username"]
         password = form_data["password"]
         validation_errors = self._validate_fields(

@@ -1,92 +1,162 @@
 """Welcome to Reflex! This file outlines the steps to create a basic app."""
 
 import reflex as rx
-import reflex_local_auth
+
 from rxconfig import config
-from .ui.base import base_page
-from .auth.pages import (
-    my_login_page,
-    my_register_page,
-    my_logout_page)
 
-from .auth.state import SessionState
-from . import contact,navigation,pages,pages
-from .pages.protected import protected_page
 
+class State(rx.State):
+    """The app state."""
+    pass
+
+def navbar_link(text: str, url: str) -> rx.Component:
+    return rx.link(rx.text(text, size="4", weight="medium"), href=url)
+
+
+def navbar() -> rx.Component:
+    return rx.box(
+        rx.desktop_only(
+            rx.hstack(
+                rx.hstack(
+                    rx.image(
+                        src="https://web.reflex-assets.dev/other/logo.jpg",
+                        width="2.25em",
+                        height="auto",
+                        border_radius="25%",
+                    ),
+                    rx.heading("Reflex", size="7", weight="bold"),
+                    align_items="center",
+                ),
+                rx.hstack(
+                    navbar_link("Home", "/#"),
+                    rx.menu.root(
+                        rx.menu.trigger(
+                            rx.button(
+                                rx.text("Services", size="4", weight="medium"),
+                                rx.icon("chevron-down"),
+                                weight="medium",
+                                variant="ghost",
+                                size="3",
+                            ),
+                        ),
+                        rx.menu.content(
+                            rx.menu.item("Service 1"),
+                            rx.menu.item("Service 2"),
+                            rx.menu.item("Service 3"),
+                        ),
+                    ),
+                    navbar_link("Pagina", "/pagina"),
+                    navbar_link("Contact", "/#"),
+                    justify="end",
+                    spacing="5",
+                ),
+                justify="between",
+                align_items="center",
+            ),
+        ),
+        rx.mobile_and_tablet(
+            rx.hstack(
+                rx.hstack(
+                    rx.image(
+                        src="https://web.reflex-assets.dev/other/logo.jpg",
+                        width="2em",
+                        height="auto",
+                        border_radius="25%",
+                    ),
+                    rx.heading("Reflex", size="6", weight="bold"),
+                    align_items="center",
+                ),
+                rx.menu.root(
+                    rx.menu.trigger(rx.icon("menu", size=30)),
+                    rx.menu.content(
+                        rx.menu.item("Home"),
+                        rx.menu.sub(
+                            rx.menu.sub_trigger("Services"),
+                            rx.menu.sub_content(
+                                rx.menu.item("Service 1"),
+                                rx.menu.item("Service 2"),
+                                rx.menu.item("Service 3"),
+                            ),
+                        ),
+                        rx.menu.item("About"),
+                        rx.menu.item("Pagina"),
+                        rx.menu.item("Contact"),
+                    ),
+                    justify="end",
+                ),
+                justify="between",
+                align_items="center",
+            ),
+        ),
+        bg=rx.color("accent", 3),
+        padding="1em",
+        # position="fixed",
+        # top="0px",
+        # z_index="5",
+        width="100%",
+    )
+
+
+def base_page(child:rx.Component,*args,**kargs)->rx.Component:
+    return rx.fragment(
+        navbar(),
+        rx.box(
+            rx.center(
+                child
+            ),
+        ),
+        rx.logo(),
+        rx.color_mode.button(position="bottom-left")
+    )
 
 def index() -> rx.Component:
     # Welcome Page (Index)
-    my_index_child = rx.vstack(
-        rx.heading(
-            "Welcome to Reflex!", size="9"
+        index_child=rx.vstack(
+            rx.flex(
+                rx.heading(
+                "Welcome to Reflex!", 
+                size="9",
+                align="center",
+                direction="column",
+                width="100%"
+                )
+            ),
+            rx.text(
+                "Get started by editing ",
+                rx.code(f"{config.app_name}/{config.app_name}.py"),
+                size="5",
+            ),
+            rx.link(
+                rx.button("Check out our docs!"),
+                href="https://reflex.dev/docs/getting-started/introduction/",
+                is_external=True,
+            ),
+            spacing="5",
+            justify="center",
+            min_height="85vh",
         ),
-        rx.text(
-            "Get started by editing ",
-            rx.code(f"{config.app_name}/{config.app_name}.py"),
-            size="5",
+        return base_page(index_child)
+
+
+def pagina() -> rx.Component:
+    # Welcome Page (Index)
+        pagina_child=rx.vstack(
+            rx.flex(
+                rx.heading(
+                "Mi pagina", 
+                size="9",
+                align="center",
+                direction="column",
+                width="100%"
+                )
+            ),
+            spacing="5",
+            justify="center",
+            min_height="85vh",
         ),
-        rx.link(
-            "Este es un link para about",
-            href="/about"
-        ),
-        rx.link(
-            rx.button("Check out our docs!"),
-            href="https://reflex.dev/docs/getting-started/introduction/",
-            is_external=True,
-        ),
-        spacing="5",
-        justify="center",
-        min_height="85vh",
-        align="center"
-    )
-    return base_page(my_index_child)
+        return base_page(pagina_child)
 
 
 app = rx.App()
-app.add_page(index,title="Pagina del curso Reflex")
-
-# reflex_local_auth pages
-app.add_page(
-    my_login_page,
-    route=reflex_local_auth.routes.LOGIN_ROUTE,
-    title="Login",
-)
-app.add_page(
-    my_register_page,
-    route=reflex_local_auth.routes.REGISTER_ROUTE,
-    title="Register",
-)
-
-app.add_page(
-    my_logout_page,
-    route=navigation.routes.LOGOUT_ROUTE,
-    title="Logout",
-)
-
-# my pages
-app.add_page(
-    pages.pricing_page, 
-    route=navigation.routes.PRICING_ROUTE
-)
-
-app.add_page(
-    pages.about_page,
-    route=navigation.routes.ABOUT_US_ROUTE
-)
-
-app.add_page(
-    contact.contact_page, 
-    route=navigation.routes.CONTACT_US_ROUTE
-)
-
-app.add_page(
-    contact.contact_entries_list_page, 
-    route=navigation.routes.CONTACT_ENTRIES_ROUTE,
-    on_load=contact.ContactState.list_entries
-)
-
-app.add_page(
-    protected_page, 
-    route="/protected/",
-    on_load=SessionState.on_load
-)
+app.add_page(index)
+app.add_page(pagina,route="/pagina")
